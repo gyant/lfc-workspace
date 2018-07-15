@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Update apt
+      apt:
+        update_cache: yes
+    - name: Install LFC Host Dependencies
+      apt:
+        name: "{{ item }}"
+        update_cache: no
+      with_items:
+        - bison
+        - binutils
+        - bzip2
+        - coreutils
+        - diffutils
+        - findutils
+        - gawk
+        - build-essential
+        - gzip
+        - texinfo
+    - name: Run Verification Script
+      script: /home/vagrant/scripts/version-check.sh
