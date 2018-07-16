@@ -43,3 +43,8 @@
         path: /home/vagrant/lfs
         src: /mnt/lfs
         state: link
+    - name: Set up global env vars
+      copy:
+        src: /home/vagrant/scripts/globals.sh
+        dest: /etc/profile.d/globals.sh
+        remote_src: yes
