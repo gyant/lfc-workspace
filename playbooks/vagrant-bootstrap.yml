@@ -20,11 +20,15 @@
         - build-essential
         - gzip
         - texinfo
-    - name: Symlink sh to bash
+    - name: Create LFS Symlinks
       file:
-        path: /bin/sh
-        src: /bin/bash
+        path: "{{ item[0] }}"
+        src: "{{ item[1] }}"
         state: link
+      with_items:
+        - [ "sh", "bash" ]
+        - [ "awk", "gawk" ]
+        - [ "yacc", "bison" ]
     - name: Run Verification Script
       script: /home/vagrant/scripts/version-check.sh
     - name: Create Mnt Directory for LFC
