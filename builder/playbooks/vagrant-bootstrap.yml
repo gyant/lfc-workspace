@@ -38,3 +38,8 @@
         fstype: ext4
         boot: yes
         state: present
+    - name: Set up symlink in vagrant home to /mnt/lfs
+      file:
+        path: /home/vagrant/lfs
+        src: /mnt/lfs
+        state: link
