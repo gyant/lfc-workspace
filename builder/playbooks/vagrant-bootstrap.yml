@@ -20,5 +20,21 @@
         - build-essential
         - gzip
         - texinfo
+    - name: Symlink sh to bash
+      file:
+        path: /bin/sh
+        src: /bin/bash
+        state: link
     - name: Run Verification Script
       script: /home/vagrant/scripts/version-check.sh
+    - name: Create Mnt Directory for LFC
+      file:
+        path: /mnt/lfs
+        state: directory
+    - name: Set up /dev/sdb1 mount
+      mount:
+        src: /dev/sdb1
+        path: /mnt/lfs
+        fstype: ext4
+        boot: yes
+        state: present
