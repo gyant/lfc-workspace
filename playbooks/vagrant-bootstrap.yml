@@ -20,15 +20,22 @@
         - build-essential
         - gzip
         - texinfo
-    - name: Create LFS Symlinks
+        - whois
+    - name: Create LFS Symlinks - sh to bash
       file:
-        path: "{{ item[0] }}"
-        src: "{{ item[1] }}"
+        path: /bin/sh
+        src: /bin/bash
         state: link
-      with_items:
-        - [ "sh", "bash" ]
-        - [ "awk", "gawk" ]
-        - [ "yacc", "bison" ]
+    - name: Create LFS Symlinks - awk to gawk
+      file:
+        path: /usr/bin/awk
+        src: /usr/bin/gawk
+        state: link
+    - name: Create LFS Symlinks - yacc to bison
+      file:
+        path: /usr/bin/yacc
+        src: /usr/bin/bison
+        state: link
     - name: Run Verification Script
       script: /home/vagrant/scripts/version-check.sh
     - name: Create Mnt Directory for LFC
@@ -51,4 +58,26 @@
       copy:
         src: /home/vagrant/scripts/globals.sh
         dest: /etc/profile.d/globals.sh
+        remote_src: yes
+    - name: Ensure group "lfs" exists
+      group:
+        name: lfs
+        state: present
+    - name: Create "lfs" user
+      user:
+        name: lfs
+        group: lfs
+        home: /home/lfs
+        password: $6$M3AO5O5C8$LL08W3mp9nApdZtpjPMjRnU43e2ASXFE9AAr0QKl9pFN6ypGCugvJPeL76P.UKt8bCpkPxcsFPxorNV2r6SxZ0
+        skeleton: /dev/null
+        state: present
+    - name: Copy .bashrc
+      copy:
+        src: /home/vagrant/scripts/profiles/.bashrc
+        dest: /home/lfs/.bashrc
+        remote_src: yes
+    - name: Copy .bash_profile
+      copy:
+        src: /home/vagrant/scripts/profiles/.bash_profile
+        dest: /home/lfs/.bash_profile
         remote_src: yes
